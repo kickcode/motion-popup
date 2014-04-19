@@ -13,12 +13,18 @@ class Motion::Popup::Background < NSView
   end
 
   def drawRect(rect)
-    return unless @arrow_x
     content_rect = NSInsetRect(self.bounds, self.line_thickness, self.line_thickness)
     path = NSBezierPath.bezierPath
 
-    path.moveToPoint(NSMakePoint(@arrow_x, NSMaxY(content_rect)))
-    path.lineToPoint(NSMakePoint(@arrow_x + self.arrow_width / 2, NSMaxY(content_rect) - self.arrow_height))
+    top_left_corner = NSMakePoint(NSMinX(content_rect), NSMaxY(content_rect) - self.arrow_height)
+
+    path.moveToPoint(NSMakePoint(top_left_corner.x + self.corner_radius, top_left_corner.y))
+
+    if @arrow_x
+        path.lineToPoint(NSMakePoint(@arrow_x - self.arrow_width / 2, NSMaxY(content_rect) - self.arrow_height))
+        path.lineToPoint(NSMakePoint(@arrow_x, NSMaxY(content_rect)))
+        path.lineToPoint(NSMakePoint(@arrow_x + self.arrow_width / 2, NSMaxY(content_rect) - self.arrow_height))
+    end
     path.lineToPoint(NSMakePoint(NSMaxX(content_rect) - self.corner_radius, NSMaxY(content_rect) - self.arrow_height))
 
     top_right_corner = NSMakePoint(NSMaxX(content_rect), NSMaxY(content_rect) - self.arrow_height)
@@ -35,10 +41,10 @@ class Motion::Popup::Background < NSView
 
     path.lineToPoint(NSMakePoint(NSMinX(content_rect), NSMaxY(content_rect) - self.arrow_height - self.corner_radius))
 
-    top_left_corner = NSMakePoint(NSMinX(content_rect), NSMaxY(content_rect) - self.arrow_height)
+    
     path.curveToPoint(NSMakePoint(NSMinX(content_rect) + self.corner_radius, NSMaxY(content_rect) - self.arrow_height), controlPoint1: top_left_corner, controlPoint2: top_left_corner)
 
-    path.lineToPoint(NSMakePoint(@arrow_x - self.arrow_width / 2, NSMaxY(content_rect) - self.arrow_height))
+    
     path.closePath
 
     NSColor.whiteColor.setFill
