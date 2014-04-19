@@ -1,6 +1,6 @@
 # motion-popup
 
-Customisable fancy popup window for your Mac OS X status bar apps
+Customisable fancy popup windows for your Mac OS X apps
 
 ## Requirements
 
@@ -59,6 +59,20 @@ For example, you can set the window as the delegate for your status menu item, a
 ```
 
 This handles updating the windows position to sit under the menu item, with the arrow pointer directly in the middle. The window itself handles hiding itself when it loses focus, and ensuring the toggle then allows it to be reshown when the menu is clicked again.
+
+For a free floating window, you can specify a frame - for example, for a centered popup window, you can call:
+
+```ruby
+@window.toggleWithFrame(CGRectMake(0, 0, 0, 0))
+@window.center
+```
+
+You can also turn off the arrow on the window when you create it, if it's not needed:
+
+```ruby
+@window = Motion::Popup::Panel.alloc.initPopup(POPUP_WIDTH, POPUP_HEIGHT)
+@window.arrow = false
+```
 
 ## Contributors
 
